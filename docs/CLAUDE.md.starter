@@ -1,0 +1,38 @@
+# Overflow Studio Website
+
+## Positioning
+Overflow Studio creates Plug-in Departments.
+
+## Core proposition
+Add the execution capacity needed to get important work shipped while the internal team takes shape.
+
+## Brand principles
+Premium. Precise. Confident. Established. Editorial. Outcome-driven.
+
+## Never position Overflow as
+A generic software agency. A freelancer marketplace. A staffing company. A collection of disconnected services.
+
+## Messaging principles
+Lead with outcomes. Avoid generic agency language. Avoid unsupported claims.
+Never invent clients, metrics, testimonials, or logos. Never expose confidential client information.
+
+## UX principles
+Clarity before decoration. Motion must communicate. Proof before persuasion.
+Strategic control remains with the client. Every CTA should have a clear reason.
+
+## Technical principles
+Fast. Accessible. Responsive. SEO-ready. Maintainable. Data-driven case studies.
+
+## Design personality
+Precise, quietly powerful, premium, technical, editorial, established, confident, intentional.
+Premium comes from composition, typography, whitespace, hierarchy, interaction, evidence, and restraint —
+not gradients, glassmorphism, giant shadows, decorative particles, or generic SaaS visual tropes.
+
+## Stack
+Next.js + Tailwind. Animation: Lenis (smooth scroll) + GSAP/ScrollTrigger (hero and marketing sequences)
++ Motion (component transitions). Add Three.js only where a 3D moment earns its weight.
+
+## Full spec
+The complete build specification lives in this project — reference it for section-level detail
+(page architecture, copy rules, motion tokens, acceptance criteria). This file is the always-loaded
+summary; the full doc is the source of truth for anything not covered here.
