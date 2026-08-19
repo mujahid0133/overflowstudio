@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(node -p \"require\\('/Users/nisarahmed/work/overflowstudio/node_modules/@react-three/fiber/package.json'\\).version\")",
+      "Bash(lsof -ti:3000)",
+      "Bash(xargs -r kill -9)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(npx playwright *)",
+      "Bash(npx --no-install playwright --version)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(npx --no-install playwright install --dry-run chromium)",
+      "Read(//Users/nisarahmed/Library/Caches/ms-playwright/**)",
+      "Bash(node shot.mjs \"http://localhost:3000/\" \"$\\(pwd\\)/full-desktop.png\" 1440 4000)",
+      "Bash(node -e \"require.resolve\\('playwright'\\)\")",
+      "Bash(node -e \"console.log\\(require\\('playwright'\\)\\)\")"
+    ]
+  }
+}

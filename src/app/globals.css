@@ -1,26 +1,150 @@
 @import "tailwindcss";
 
+/*
+  Overflow Studio design tokens.
+  Editorial-premium: warm paper/ink base, one confident accent, selective
+  inverted (dark) sections for dramatic moments. No gradients, no glass,
+  no rainbow palette — see docs/overflow-studio-spec.md section 4.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-paper: #f7f5f0;
+  --color-paper-dim: #efece4;
+  --color-ink: #15140f;
+  --color-ink-soft: #45443c;
+  --color-ink-faint: #8a887c;
+  --color-line: #ddd9cd;
+  --color-line-strong: #c7c2b2;
+
+  --color-accent: #ff5a1f;
+  --color-accent-ink: #2a1400;
+  --color-accent-soft: #ffe4d4;
+
+  /* Inverted (dark) section palette */
+  --color-ink-950: #0d0c09;
+  --color-ink-900: #15140f;
+  --color-ink-800: #211f18;
+  --color-paper-on-ink: #f2efe6;
+  --color-paper-on-ink-soft: #b7b3a4;
+  --color-line-on-ink: #34322a;
+
+  /*
+    Homepage-scoped cinematic tokens — "The Execution Engine" direction, see
+    docs/creative-direction.md. Additive only: nothing above this changes,
+    and nothing outside the homepage should reference these yet. `--color-
+    accent` above doubles as the signal color here on purpose — the doc
+    treats orange as a rare "system is active" event, not a second palette.
+  */
+  --color-void: #0b0b0a;
+  --color-void-soft: #171613;
+  --color-ivory: #f3f0e8;
+  --color-ivory-dim: #e7e2d4;
+
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+
+  /* Motion tokens — see docs/overflow-studio-spec.md section 8 */
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-micro: 120ms;
+  --duration-fast: 220ms;
+  --duration-standard: 420ms;
+  --duration-slow: 720ms;
+  --duration-dramatic: 1100ms;
+
+  --container-max: 1280px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  /* z-index scale — see docs/overflow-studio-spec.md section 5 */
+  --z-nav: 50;
+  --z-cursor: 100;
+
+  /* Custom cursor sizing (CustomCursor.tsx) */
+  --cursor-size: 20px;
+  --cursor-size-hover: 64px;
 }
+
+/*
+  Breakpoint convention (Tailwind v4 defaults, unchanged values — the fix is
+  disciplined usage, not new breakpoints):
+  base (<640px)  — true single narrative column.
+  sm  (640px)    — used sparingly, only where a specific grid needs a
+                   1→2→3 step instead of jumping straight to `md`'s 2-col.
+  md  (768px)    — tablet: simplified composition, preserved hierarchy.
+                   The existing default for most section grids.
+  lg  (1024px)   — desktop editorial composition activates: gate every
+                   GSAP pin/scrub sequence and Flow's horizontal mode here.
+                   Below lg, those sections render their plain fallback
+                   markup — never pin/scrub a cramped mobile viewport.
+  xl  (1280px)   — matches --container-max; reserved for the two most
+                   dramatic type-scale steps only (Hero H1, FinalCta H2),
+                   not sprayed across every section.
+*/
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--color-paper);
+  --color-paper-dim: var(--color-paper-dim);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+
+  --color-accent: var(--color-accent);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-accent-soft: var(--color-accent-soft);
+
+  --color-ink-950: var(--color-ink-950);
+  --color-ink-900: var(--color-ink-900);
+  --color-ink-800: var(--color-ink-800);
+  --color-paper-on-ink: var(--color-paper-on-ink);
+  --color-paper-on-ink-soft: var(--color-paper-on-ink-soft);
+  --color-line-on-ink: var(--color-line-on-ink);
+
+  --color-void: var(--color-void);
+  --color-void-soft: var(--color-void-soft);
+  --color-ivory: var(--color-ivory);
+  --color-ivory-dim: var(--color-ivory-dim);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
