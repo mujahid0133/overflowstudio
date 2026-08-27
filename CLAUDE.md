@@ -76,6 +76,20 @@ that does not (outlined and hatched, never filled), `module` = Overflow at rest,
 Overflow locked into the gap, and the only state that earns orange. Reuse those states rather
 than inventing a new visual vocabulary per section.
 
+## Deployment
+Published to GitHub Pages as a static export via `.github/workflows/deploy.yml`:
+`https://mujahid0133.github.io/overflowstudio/`. Because it is a *project* site it
+is served from `/overflowstudio/`, so `next.config.ts` sets `basePath` from
+`NEXT_PUBLIC_BASE_PATH` and `src/lib/site.ts` is the single source of truth for the
+site URL that `metadataBase`, `sitemap.xml` and `robots.txt` all resolve against.
+Never hardcode the domain in a component — read it from `src/lib/site.ts`.
+
+`next build` now emits `out/` rather than a server bundle. `next start` no longer
+applies; use `npm run preview` to serve a production build locally, or `npm run dev`
+as usual. Anything that needs a server at runtime (API routes, server actions,
+`next/image` optimization, ISR) will not work under this setup — the contact form is
+already client-only, see docs/CONTENT-TODO.md.
+
 ## Content status
 See `docs/CONTENT-TODO.md` for exactly what real content (logo, contact details,
 the first case study, founder bios) is still needed before launch. Never fill any

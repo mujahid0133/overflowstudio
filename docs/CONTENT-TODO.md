@@ -81,11 +81,29 @@ actually do contractually, not a generic SOC2-style claim.
       nothing until then (same honest-omission approach as the homepage's
       absent testimonial beat).
 
+## Deployment (live)
+The site is published to GitHub Pages by `.github/workflows/deploy.yml` as a
+static export, at:
+
+    https://mujahid0133.github.io/overflowstudio/
+
+- [x] Site URL is no longer a hardcoded placeholder. `metadataBase`,
+      `sitemap.xml` and `robots.txt` all resolve against `src/lib/site.ts`,
+      which reads `NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_BASE_PATH` from the
+      environment. The workflow sets both.
+- [ ] Real domain — when one exists: point DNS at Pages, set
+      `NEXT_PUBLIC_SITE_URL` to it in the workflow, **remove**
+      `NEXT_PUBLIC_BASE_PATH` (a site at a domain root has no base path),
+      and add a `CNAME` file to `public/`. No code changes needed.
+
+## Case study route is currently disabled
+`src/app/case-studies/_slug/` is `[slug]` with the brackets removed, because
+static export requires a dynamic route to generate at least one path and
+there are no published case studies to generate from. Renaming the folder
+back to `[slug]` re-enables it — see the comment at the top of that file.
+`/case-studies` itself still works and shows its empty state.
+
 ## Before deploying
-- [ ] Real domain — currently `https://overflowstudio.co` is used as a
-      placeholder for `metadataBase` (`src/app/layout.tsx`), `sitemap.ts`
-      and `robots.ts`, and every page's Open Graph `url`. Swap all of these
-      once the real domain is confirmed.
 - [ ] Analytics provider decision (spec section 27 — nothing wired up yet).
       `src/content/privacy.ts` explicitly states no analytics/tracking is
       in use today — update that copy the moment analytics is added.

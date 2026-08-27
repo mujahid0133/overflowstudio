@@ -1,0 +1,79 @@
+# Builds the site as a static export and publishes it to GitHub Pages.
+#
+# One-time setup in the repository (this workflow cannot do it for you):
+#   Settings → Pages → Build and deployment → Source: "GitHub Actions"
+#
+# The site is a GitHub Pages *project* site, so it is served from
+# /<repo>/ rather than the domain root. NEXT_PUBLIC_BASE_PATH below is what
+# makes every asset and internal link resolve correctly; NEXT_PUBLIC_SITE_URL
+# is what Open Graph tags, sitemap.xml and robots.txt resolve against. Both
+# are read by src/lib/site.ts and next.config.ts.
+#
+# Moving to a real domain later: set NEXT_PUBLIC_SITE_URL to it, drop
+# NEXT_PUBLIC_BASE_PATH entirely, and add the CNAME. Nothing else changes.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - claude/overflow-studio-website-mjsxw8
+  # Lets you redeploy from the Actions tab without pushing a commit.
+  workflow_dispatch:
+
+# Read the repo, mint the token Pages deployment needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race. In-progress runs finish rather than being
+# cancelled, so a half-published site can't be left behind.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build static export
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        run: npm run build
+
+      # Actions-based Pages deployment doesn't run Jekyll, but this costs
+      # nothing and removes any doubt about the underscore-prefixed _next
+      # directory being skipped.
+      - name: Disable Jekyll processing
+        run: touch out/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

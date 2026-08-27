@@ -4,6 +4,7 @@ import { MotionConfig } from "motion/react";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import { Navigation } from "@/components/nav/Navigation";
 import { Footer } from "@/components/footer/Footer";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 /*
@@ -24,11 +25,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
 });
-
-// TODO(content): swap for the real production domain before launch — see
-// docs/CONTENT-TODO.md. Everything below (metadataBase, sitemap, OG urls)
-// resolves against this placeholder until then.
-const siteUrl = "https://overflowstudio.co";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

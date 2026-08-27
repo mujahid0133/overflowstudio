@@ -1,9 +1,14 @@
 import type { MetadataRoute } from "next";
 import { caseStudies } from "@/content/case-studies";
+import { siteUrl } from "@/lib/site";
 
-// TODO(content): swap for the real production domain before launch — see
-// docs/CONTENT-TODO.md.
-const siteUrl = "https://overflowstudio.co";
+/*
+  Required by `output: "export"` (next.config.ts): metadata routes are route
+  handlers, and the exporter needs them explicitly marked static so it emits
+  a real file at build time instead of expecting a server to generate one.
+*/
+export const dynamic = "force-static";
+
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
