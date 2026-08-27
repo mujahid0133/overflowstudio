@@ -3,10 +3,10 @@ import { cx } from "@/lib/cx";
 
 /**
  * Deliberately a narrow union of wrapper tags rather than React's
- * `ElementType`: @react-three/fiber (see components/home/hero/HeroScene.tsx)
- * augments JSX.IntrinsicElements with the whole three.js namespace, which
- * collapses `ElementType`'s intersected `children` type to `never`. Naming
- * the tags Container is actually meant to render keeps the prop usable.
+ * `ElementType`. Naming the handful of tags Container is actually meant to
+ * render keeps the prop honest and keeps `children` well-typed — a
+ * container that can be any intrinsic element is a container with no
+ * meaning.
  */
 type ContainerElement =
   | "div"

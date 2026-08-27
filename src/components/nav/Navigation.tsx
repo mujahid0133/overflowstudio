@@ -10,11 +10,22 @@ import { MagneticButton } from "@/components/motion/MagneticButton";
 import { cx } from "@/lib/cx";
 import { duration, ease, stagger } from "@/lib/motion-tokens";
 
+/**
+ * §07 — the navigation itself has to reinforce that Overflow is a model,
+ * not an agency catalog. Four items, no "Services", no "Solutions", no
+ * "Capabilities", no "Industries".
+ *
+ * Model / Product / Proof are anchors into the homepage argument rather
+ * than separate pages: the argument is the site, and sending someone to a
+ * detached "Model" page would break the sequence that makes it land. About
+ * is a real page. The deeper pages (how it works, outcomes, case studies,
+ * FAQ) stay reachable from the footer without competing for attention up
+ * here.
+ */
 const links = [
-  { href: "/plug-in-departments", label: "Model" },
-  { href: "/outcomes", label: "Outcomes" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/case-studies", label: "Case studies" },
+  { href: "/#model", label: "Model" },
+  { href: "/#product", label: "Product" },
+  { href: "/#proof", label: "Proof" },
   { href: "/about", label: "About" },
 ];
 
@@ -32,9 +43,8 @@ function getScrolledServerSnapshot() {
 }
 
 /**
- * Transparent over the hero, compact + subtly backdropped after scroll.
- * Not a shrinking navbar — same height throughout, just a background/border
- * transition, per spec section 7.
+ * Transparent over the hero, then a near-black backdrop with a hairline
+ * once the page moves. Same height throughout — not a shrinking navbar.
  */
 export function Navigation() {
   const scrolled = useSyncExternalStore(
@@ -52,24 +62,19 @@ export function Navigation() {
     setOpen(false);
   }
 
-  // Every page's hero is an inverted (dark) Section, so while the header is
-  // still transparent over it, its own content needs the light-on-dark
-  // treatment too — not just the background transition.
-  const dark = !scrolled && !open;
-
   return (
     <header
       className={cx(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-(--duration-standard) ease-(--ease-standard)",
-        scrolled || open ? "bg-paper/90 backdrop-blur-md border-b border-line" : "bg-transparent",
+        scrolled || open ? "border-b border-line bg-paper/92 backdrop-blur-md" : "bg-transparent",
       )}
     >
-      <div className="mx-auto flex h-18 max-w-(--container-max) items-center justify-between px-(--gutter)">
+      <div className="mx-auto flex h-20 max-w-(--container-max) items-center justify-between px-(--gutter)">
         <Link href="/" aria-label="Overflow Studio — home">
-          <Logo invert={dark} />
+          <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-9 md:flex" aria-label="Primary">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -77,11 +82,8 @@ export function Navigation() {
               onMouseEnter={() => setHoveredHref(link.href)}
               onMouseLeave={() => setHoveredHref(null)}
               className={cx(
-                "relative text-sm transition-colors",
-                dark
-                  ? "text-paper-on-ink-soft hover:text-paper-on-ink"
-                  : "text-ink-soft hover:text-ink",
-                pathname === link.href && (dark ? "text-paper-on-ink font-medium" : "text-ink font-medium"),
+                "relative font-mono text-[11px] tracking-[0.18em] uppercase transition-colors",
+                pathname === link.href ? "text-ink" : "text-ink-soft hover:text-ink",
               )}
             >
               {link.label}
@@ -89,10 +91,7 @@ export function Navigation() {
                 {hoveredHref === link.href && (
                   <motion.span
                     layoutId="nav-underline"
-                    className={cx(
-                      "pointer-events-none absolute inset-x-0 -bottom-1.5 h-px",
-                      dark ? "bg-paper-on-ink" : "bg-ink",
-                    )}
+                    className="pointer-events-none absolute inset-x-0 -bottom-1.5 h-px bg-accent"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -106,8 +105,8 @@ export function Navigation() {
 
         <div className="hidden md:block">
           <MagneticButton>
-            <Button href="/contact" variant="primary" className="px-5 py-2.5">
-              Talk to Overflow
+            <Button href="/contact" variant="primary" className="px-5 py-3">
+              Activate capacity
             </Button>
           </MagneticButton>
         </div>
@@ -122,15 +121,13 @@ export function Navigation() {
           <span className="relative block h-3.5 w-5">
             <span
               className={cx(
-                "absolute inset-x-0 top-0 h-[1.5px] transition-[transform,background-color] duration-(--duration-fast)",
-                dark ? "bg-paper-on-ink" : "bg-ink",
+                "absolute inset-x-0 top-0 h-[1.5px] bg-ink transition-transform duration-(--duration-fast)",
                 open && "translate-y-[6.5px] rotate-45",
               )}
             />
             <span
               className={cx(
-                "absolute inset-x-0 bottom-0 h-[1.5px] transition-[transform,background-color] duration-(--duration-fast)",
-                dark ? "bg-paper-on-ink" : "bg-ink",
+                "absolute inset-x-0 bottom-0 h-[1.5px] bg-ink transition-transform duration-(--duration-fast)",
                 open && "-translate-y-[6.5px] -rotate-45",
               )}
             />
@@ -161,7 +158,10 @@ export function Navigation() {
                     ease: ease.signature,
                   }}
                 >
-                  <Link href={link.href} className="text-base text-ink">
+                  <Link
+                    href={link.href}
+                    className="font-mono text-sm tracking-[0.16em] text-ink uppercase"
+                  >
                     {link.label}
                   </Link>
                 </motion.li>
@@ -177,7 +177,7 @@ export function Navigation() {
                 }}
               >
                 <Button href="/contact" variant="primary" className="mt-2 w-full">
-                  Talk to Overflow
+                  Activate capacity
                 </Button>
               </motion.li>
             </ul>

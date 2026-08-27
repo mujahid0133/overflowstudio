@@ -1,3 +1,14 @@
+> **SUPERSEDED IN PART.** `docs/build-specification.md` is now the source of truth for
+> positioning, homepage architecture, hero and CTA copy, navigation, palette, motion
+> rules and claim discipline. This document predates it and still describes the earlier
+> hero ("KEEP IMPORTANT WORK MOVING WHILE YOUR TEAM TAKES SHAPE"), the earlier navigation
+> (Model / Outcomes / How it works / Case studies / About) and the earlier CTA ("Talk to
+> Overflow") — none of which are what the site says any more. Where the two disagree, the
+> newer document wins. It remains the reference for the non-homepage pages, analytics,
+> SEO and QA.
+
+---
+
 \# OVERFLOW STUDIO  
 \# 100/10 WEBSITE IMPLEMENTATION SPECIFICATION  
 \# MASTER BUILD BRIEF FOR CLAUDE CODE

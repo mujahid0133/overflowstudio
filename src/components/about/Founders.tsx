@@ -5,7 +5,7 @@ import { founders } from "@/content/about";
 
 /**
  * Renders nothing when there are no real founder profiles yet — same
- * honest-omission approach as the homepage's Founder Experience section.
+ * honest-omission approach as the homepage's absent testimonial beat.
  * No "bios coming soon" apology copy; just don't claim what isn't real yet.
  * See docs/CONTENT-TODO.md.
  */

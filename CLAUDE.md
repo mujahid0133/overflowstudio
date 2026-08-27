@@ -29,24 +29,52 @@ Premium comes from composition, typography, whitespace, hierarchy, interaction, 
 not gradients, glassmorphism, giant shadows, decorative particles, or generic SaaS visual tropes.
 
 ## Stack
-Next.js + Tailwind. Animation: Lenis (smooth scroll) + GSAP/ScrollTrigger (hero and marketing sequences)
-+ Motion (component transitions). Add Three.js only where a 3D moment earns its weight.
+Next.js + Tailwind. Animation: Lenis (smooth scroll) + GSAP/ScrollTrigger (scroll-driven sequences)
++ Motion (mount and component transitions). No 3D: the modular-capacity metaphor is drawn with
+planes, lines and typography, which is lighter and clearer than WebGL would be. Don't add
+Three.js back without a visual idea that genuinely can't be built any other way.
+
+## Design tokens
+The site is dark-first, on the palette fixed in the build spec: `#0B0B0B` base, `#F4F1EA` text,
+`#A7A39B` secondary text, `#242424` structure, `#FF6A00` signal, `#FFF3DC` warm highlight.
+Tokens live in `src/app/globals.css` under the existing semantic names (`paper` = the near-black
+surface, `ink` = the off-white type on it), so components read slots, not hex values.
+Orange is an EVENT, not a theme color — it marks activation, progress and the primary action,
+and nothing else. Target roughly 85% neutral surfaces / 10% supporting neutrals / 5% orange.
+If orange stops being surprising, it has stopped meaning "capacity is active".
 
 ## Full spec
-The complete 41-section build specification lives at `docs/overflow-studio-spec.md` —
-reference it for section-level detail (page architecture, copy rules, motion tokens,
-acceptance criteria). This file is the always-loaded summary; the full doc is the
-source of truth for anything not covered here.
+`docs/build-specification.md` is the definitive 51-section build specification and the
+source of truth — positioning, homepage architecture, exact hero/CTA copy, palette,
+motion rules, claim discipline, quality test.
+
+`docs/overflow-studio-spec.md` is the earlier 41-section spec. It is superseded wherever
+the two disagree (it still describes the old hero copy, the old navigation and the old
+`Talk to Overflow` CTA), but it remains useful for detail the newer doc doesn't cover:
+the non-homepage pages, analytics, SEO and QA. Check the newer doc first, always.
+
+This file is the always-loaded summary of both.
 
 ## Creative direction
 `docs/creative-direction.md` is the visual/experiential layer on top of the spec above —
-"The Execution Engine": near-black/ivory cinematic system, typography and a recurring
-system-line motif as the primary visual objects, orange used only as a rare activation
-signal, no default card grids. It is being rolled out one homepage beat at a time
-(hero first) per its own workflow-discipline rule — don't extend it to a new section or
-another page without checking it first, and don't assume every section already matches
-it. Its cinematic tokens are homepage-scoped; the rest of the site still uses the
-paper/ink tokens below until a section is explicitly rebuilt.
+"The Execution Engine": near-black cinematic system, typography and a recurring
+capacity-gap motif as the primary visual objects, orange used only as a rare activation
+signal, no default card grids.
+
+The homepage is now built end to end in this language, and the dark palette applies
+site-wide. The homepage is one continuous argument in a fixed order — see the comment at
+the top of `src/app/page.tsx`; each section answers the next question in the visitor's
+mind, so don't reorder sections for visual variety or insert one that doesn't answer a
+question. The other pages (`/how-it-works`, `/outcomes`, `/case-studies`, `/about`,
+`/faq`, `/contact`) inherit the palette but still use their earlier compositions; rebuild
+them one at a time against this direction rather than all at once.
+
+## The recurring visual sentence
+Every diagram on the homepage is built from `src/components/home/system/Plate.tsx`, whose
+four states mean the same thing everywhere: `solid` = capacity that exists, `gap` = capacity
+that does not (outlined and hatched, never filled), `module` = Overflow at rest, `active` =
+Overflow locked into the gap, and the only state that earns orange. Reuse those states rather
+than inventing a new visual vocabulary per section.
 
 ## Content status
 See `docs/CONTENT-TODO.md` for exactly what real content (logo, contact details,
