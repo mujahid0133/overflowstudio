@@ -1,6 +1,8 @@
 # Builds the site as a static export and publishes it to GitHub Pages.
 #
-# One-time setup in the repository (this workflow cannot do it for you):
+# Pages is enabled by the configure-pages step below (`enablement: true`),
+# using the workflow's own token. If that is blocked by org policy the step
+# fails with "Get Pages site failed", and it has to be done by hand once:
 #   Settings → Pages → Build and deployment → Source: "GitHub Actions"
 #
 # The site is a GitHub Pages *project* site, so it is served from
@@ -62,7 +64,12 @@ jobs:
       - name: Disable Jekyll processing
         run: touch out/.nojekyll
 
+      # `enablement: true` turns Pages on (source: GitHub Actions) if it isn't
+      # already, instead of failing with "Get Pages site failed" the way a
+      # first run on a repo without Pages configured otherwise would.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
