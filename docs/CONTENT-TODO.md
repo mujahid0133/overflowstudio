@@ -7,10 +7,11 @@ blocks development — only launch.
 
 ## Brand assets
 - [ ] Real logo/symbol — currently a text placeholder (`src/components/brand/Logo.tsx`)
-- [ ] Confirm or replace the color palette — currently a designed placeholder
-      (warm paper `#F7F5F0` / ink `#15140F` / accent `#FF5A1F`), see
-      `src/app/globals.css`. Swap the token values there once you have real
-      brand colors; nothing else needs to change.
+- [x] Color palette — fixed by the build specification (§28) and implemented in
+      `src/app/globals.css`: `#0B0B0B` base, `#F4F1EA` text, `#A7A39B` secondary,
+      `#242424` structure, `#FF6A00` signal, `#FFF3DC` highlight. Not a placeholder
+      any more. If real brand colors ever differ, swap the token values there and
+      nothing else needs to change.
 - [ ] Favicon / OG image
 
 ## Company / trust layer (`src/components/footer/Footer.tsx`)
@@ -19,6 +20,14 @@ blocks development — only launch.
 - [ ] Registered company name/details if different from "Overflow Studio"
 - [ ] Physical address — **only add one if it's real**; spec explicitly bans
       fake office locations, so omit the line rather than invent one
+
+## Homepage proof — already live
+The two figures in §19 (eight weeks of planned work compressed into three;
+8–10 founder hours recovered per week) are on the homepage now, presented as
+things that happened, with the required "early proof points, not promises"
+disclaimer. Per spec §43 these are the ONLY numbers allowed on the site until
+more are verified — do not add a third, and do not restate either as a
+forward-looking promise.
 
 ## First case study — your friend's project
 Using a real project with his consent is legitimate proof, not fabrication
@@ -32,14 +41,18 @@ publish is fine). Before it goes on the site:
       bottleneck, why not hiring, what Overflow owned, how execution changed,
       measured outcome, founder perspective, what this means for another company)
 
-Once you have this, it plugs into `/case-studies` and replaces the
-"publishing soon" teaser on the homepage (`src/content/home.ts` →
-`caseStudyTeaser`).
+Once you have this, it plugs into `/case-studies`. There is no case-study
+teaser on the homepage any more — the homepage's evidence beat is `Proof`
+(`src/components/home/Proof.tsx`), and a real case study is what would justify
+adding a link to it.
 
-## Founder Experience section (homepage, spec section 11 §6)
-Currently **not rendered** — it requires real, approved screenshots of an
-actual conversation. Spec explicitly forbids recreating it as fake text. Add
-it back in `src/app/page.tsx` once you have that material.
+## Human evidence on the homepage
+There is deliberately **no testimonial, logo or founder-quote section** on the
+homepage. It requires real, approved material; the spec explicitly forbids
+recreating it as plausible-looking text (§19, §43). Add a beat to
+`src/app/page.tsx` once that material exists — the natural home for it is
+directly after `Proof`, where it strengthens evidence rather than interrupting
+the argument.
 
 ## About page
 - [ ] Real founder names, photos, bios (spec section 16 — no stock photos,
@@ -66,13 +79,31 @@ actually do contractually, not a generic SOC2-style claim.
 - [ ] `founders` array in `src/content/about.ts` is empty — add real
       name/role/photo/bio entries once available. The section renders
       nothing until then (same honest-omission approach as the homepage's
-      Founder Experience section).
+      absent testimonial beat).
+
+## Deployment (live)
+The site is published to GitHub Pages by `.github/workflows/deploy.yml` as a
+static export, at:
+
+    https://mujahid0133.github.io/overflowstudio/
+
+- [x] Site URL is no longer a hardcoded placeholder. `metadataBase`,
+      `sitemap.xml` and `robots.txt` all resolve against `src/lib/site.ts`,
+      which reads `NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_BASE_PATH` from the
+      environment. The workflow sets both.
+- [ ] Real domain — when one exists: point DNS at Pages, set
+      `NEXT_PUBLIC_SITE_URL` to it in the workflow, **remove**
+      `NEXT_PUBLIC_BASE_PATH` (a site at a domain root has no base path),
+      and add a `CNAME` file to `public/`. No code changes needed.
+
+## Case study route is currently disabled
+`src/app/case-studies/_slug/` is `[slug]` with the brackets removed, because
+static export requires a dynamic route to generate at least one path and
+there are no published case studies to generate from. Renaming the folder
+back to `[slug]` re-enables it — see the comment at the top of that file.
+`/case-studies` itself still works and shows its empty state.
 
 ## Before deploying
-- [ ] Real domain — currently `https://overflowstudio.co` is used as a
-      placeholder for `metadataBase` (`src/app/layout.tsx`), `sitemap.ts`
-      and `robots.ts`, and every page's Open Graph `url`. Swap all of these
-      once the real domain is confirmed.
 - [ ] Analytics provider decision (spec section 27 — nothing wired up yet).
       `src/content/privacy.ts` explicitly states no analytics/tracking is
       in use today — update that copy the moment analytics is added.

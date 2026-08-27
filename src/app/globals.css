@@ -1,48 +1,80 @@
 @import "tailwindcss";
 
 /*
-  Overflow Studio design tokens.
-  Editorial-premium: warm paper/ink base, one confident accent, selective
-  inverted (dark) sections for dramatic moments. No gradients, no glass,
-  no rainbow palette — see docs/overflow-studio-spec.md section 4.
+  Overflow Studio design tokens — "Premium execution infrastructure."
+
+  The palette is the one fixed in the build specification (§28): a near-black
+  cinematic base, warm off-white type, muted warm gray for support, and a
+  single strong orange that is treated as an EVENT, never a theme color.
+
+    #0B0B0B  near-black base
+    #F4F1EA  warm off-white text
+    #A7A39B  muted warm gray (secondary text)
+    #FF6A00  signal orange — activation only
+    #242424  structural neutral (lines, borders, plates)
+    #FFF3DC  warm cream highlight (rare)
+
+  Weighting target: ~85% neutral dark surfaces, ~10% supporting neutrals,
+  ~5% signal orange. If orange stops being surprising, it has stopped
+  meaning "capacity is active" — see §28 and docs/creative-direction.md §5.
+
+  The semantic token names (paper/ink/line) are kept from the earlier
+  light-mode system so every page keeps rendering, but their VALUES are now
+  dark-first: `paper` is the near-black surface, `ink` is the off-white type
+  that sits on it. Nothing in the codebase needs to know the palette flipped;
+  it reads the same semantic slots.
 */
 
 :root {
-  --color-paper: #f7f5f0;
-  --color-paper-dim: #efece4;
-  --color-ink: #15140f;
-  --color-ink-soft: #45443c;
-  --color-ink-faint: #8a887c;
-  --color-line: #ddd9cd;
-  --color-line-strong: #c7c2b2;
+  /* Surfaces */
+  --color-paper: #0b0b0b;
+  --color-paper-dim: #131312;
 
-  --color-accent: #ff5a1f;
-  --color-accent-ink: #2a1400;
-  --color-accent-soft: #ffe4d4;
+  /* Type on those surfaces */
+  --color-ink: #f4f1ea;
+  --color-ink-soft: #a7a39b;
+  /*
+    Tuned for contrast, not just for hierarchy: this tier carries the mono
+    kickers, section numbers, step counts and footer headings — all real
+    text at small sizes, so it has to clear WCAG AA (4.5:1) on every surface
+    it can land on, including the ember `accent-soft` plates. The earlier
+    #6f6b62 measured 3.3–3.8:1 and failed on all of them.
+    Measured: 5.5:1 on paper, 5.2:1 on paper-dim, 4.8:1 on accent-soft.
+  */
+  --color-ink-faint: #8b8779;
 
-  /* Inverted (dark) section palette */
-  --color-ink-950: #0d0c09;
-  --color-ink-900: #15140f;
-  --color-ink-800: #211f18;
-  --color-paper-on-ink: #f2efe6;
-  --color-paper-on-ink-soft: #b7b3a4;
-  --color-line-on-ink: #34322a;
+  /* Structure */
+  --color-line: #242424;
+  --color-line-strong: #46443c;
+
+  /* Signal */
+  --color-accent: #ff6a00;
+  --color-accent-ink: #140800; /* type that sits ON orange — 8.9:1 */
+  --color-accent-soft: #2a1607; /* ember tint for rare low-emphasis fills */
 
   /*
-    Homepage-scoped cinematic tokens — "The Execution Engine" direction, see
-    docs/creative-direction.md. Additive only: nothing above this changes,
-    and nothing outside the homepage should reference these yet. `--color-
-    accent` above doubles as the signal color here on purpose — the doc
-    treats orange as a rare "system is active" event, not a second palette.
+    "Inverted" sections. In the previous light system these flipped to dark;
+    now the whole site is dark, so `Section invert` means a DEEPER plate —
+    a shift in depth rather than in polarity. Kept as distinct tokens so the
+    existing pages that ask for `invert` still get a deliberate surface
+    change instead of silently becoming identical to the base.
   */
-  --color-void: #0b0b0a;
-  --color-void-soft: #171613;
-  --color-ivory: #f3f0e8;
-  --color-ivory-dim: #e7e2d4;
+  --color-ink-950: #060606;
+  --color-ink-900: #0b0b0b;
+  --color-ink-800: #191918;
+  --color-paper-on-ink: #f4f1ea;
+  --color-paper-on-ink-soft: #a7a39b;
+  --color-line-on-ink: #242424;
 
-  --font-display: var(--font-bricolage);
-  --font-body: var(--font-inter);
-  --font-mono: var(--font-jetbrains);
+  /* Cinematic aliases — the same palette named for the homepage narrative. */
+  --color-void: #0b0b0b;
+  --color-void-soft: #131312;
+  --color-ivory: #f4f1ea;
+  --color-ivory-dim: #fff3dc;
+
+  --font-display: var(--font-geist);
+  --font-body: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
 
   /* Motion tokens — see docs/overflow-studio-spec.md section 8 */
   --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
@@ -58,11 +90,6 @@
 
   /* z-index scale — see docs/overflow-studio-spec.md section 5 */
   --z-nav: 50;
-  --z-cursor: 100;
-
-  /* Custom cursor sizing (CustomCursor.tsx) */
-  --cursor-size: 20px;
-  --cursor-size-hover: 64px;
 }
 
 /*
@@ -117,7 +144,12 @@
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
+  /*
+    The page is one continuous argument; anchor jumps from the nav should
+    land below the fixed header rather than under it.
+  */
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -130,12 +162,54 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-paper);
+  color: var(--color-accent-ink);
 }
 
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+/*
+  Utility for the recurring system-diagram hatch: the visual language for
+  "capacity that does not exist yet". A gap is drawn, never filled — see
+  build spec §48. Used by the capacity-gap primitives on the homepage.
+*/
+.gap-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-line) 0 1px,
+    transparent 1px 9px
+  );
+}
+
+/*
+  §45 — the hero's mount choreography, pinned to its finished state.
+
+  This has to live in CSS rather than in Hero.tsx: the sequence is a mount
+  animation, and any JS media-query hook only resolves after hydration, by
+  which point Motion has already begun animating and a reduced-motion
+  visitor is watching a four-second sequence. These rules win on the first
+  paint, and Motion's inline styles lose to `!important`.
+
+  The result is the same diagram at rest — module seated in the slot, gap
+  gone, rail complete — with no movement at all. Keep the selectors in sync
+  with the `data-hero-*` attributes in Hero.tsx.
+*/
+@media (prefers-reduced-motion: reduce) {
+  [data-hero-beat] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* The gap's resting state is "filled", i.e. no longer visible. */
+  [data-hero-gap] {
+    opacity: 0 !important;
+  }
+
+  [data-hero-rail] {
+    width: 100% !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

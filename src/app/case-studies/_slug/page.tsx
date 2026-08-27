@@ -1,3 +1,33 @@
+/*
+  ============================================================================
+  THIS ROUTE IS CURRENTLY DISABLED — and re-enabling it is a single rename.
+
+      src/app/case-studies/_slug  →  src/app/case-studies/[slug]
+
+  Why: `caseStudies` in src/content/case-studies.ts is deliberately empty —
+  there are no published case studies yet, and the spec forbids inventing
+  one (§43). With `output: "export"` (see next.config.ts) Next requires a
+  dynamic route to generate at least one path, and errors on the empty array
+  that `generateStaticParams` correctly returns:
+
+      Page "/case-studies/[slug]" returned an empty array from
+      "generateStaticParams()". With "output: export", at least one route
+      must be generated.
+
+  The two ways to satisfy that exporter are to publish a real case study or
+  to add a fake one. Since the second is off the table, the route steps out
+  of the routing tree until the first is true. The leading underscore is
+  Next's private-folder convention: the folder is excluded from routing, so
+  the file below is preserved verbatim and compiles, but no route is emitted.
+
+  `/case-studies` itself is unaffected — it is a static route that already
+  renders an honest empty state.
+
+  When the first case study lands: add it to `caseStudies`, rename this
+  folder back to `[slug]`, and delete this comment. Nothing else changes.
+  ============================================================================
+*/
+
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Section } from "@/components/layout/Section";

@@ -6,7 +6,7 @@ import { caseStudies, emptyState } from "@/content/case-studies";
 
 /**
  * Honest empty state when there are zero published case studies — matches
- * the homepage's `caseStudyTeaser` framing ("first engagement is in
+ * the homepage's evidence framing ("first engagement is in
  * progress") rather than showing fake cards. Spec sections 6–9 and 21 ban
  * manufactured proof; an honest "not yet" is the correct state here, not a
  * placeholder grid.

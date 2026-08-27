@@ -1,18 +1,27 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/layout/Container";
 
-const explore = [
-  { href: "/plug-in-departments", label: "The model" },
-  { href: "/outcomes", label: "Outcomes" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/case-studies", label: "Case studies" },
+/**
+ * §26. The footer restates the model in one line, repeats the four primary
+ * destinations, and offers the same single action the rest of the site
+ * offers. The deeper pages sit under "More" — reachable, but not competing
+ * with the argument.
+ */
+const primary = [
+  { href: "/#product", label: "Product" },
+  { href: "/#model", label: "Model" },
+  { href: "/#proof", label: "Proof" },
+  { href: "/about", label: "About" },
 ];
 
-const company = [
-  { href: "/about", label: "About" },
+const more = [
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/plug-in-departments", label: "Plug-in Departments" },
+  { href: "/outcomes", label: "Outcomes" },
+  { href: "/case-studies", label: "Case studies" },
   { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
 ];
 
 const legal = [
@@ -31,37 +40,50 @@ export function Footer() {
 
   return (
     <footer className="border-t border-line bg-paper">
-      <Container className="grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr_1fr] md:py-20">
-        <div className="flex flex-col gap-4">
-          <Logo />
-          <p className="max-w-xs text-sm text-ink-soft">
-            Plug-in Departments — execution capacity for the work that
-            shouldn&apos;t wait for hiring.
-          </p>
-          <a
-            href={`mailto:${contactEmail}`}
-            className="text-sm text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
-          >
-            {contactEmail}
-          </a>
+      <Container className="py-20 md:py-24">
+        <div className="grid gap-14 md:grid-cols-[1.4fr_1fr_1fr] md:gap-16">
+          <div className="flex flex-col items-start gap-5">
+            <Logo />
+            <p className="max-w-xs font-display text-lg leading-snug font-medium text-ink">
+              Plug-in Departments for important work.
+            </p>
+            <a
+              href={`mailto:${contactEmail}`}
+              className="text-sm text-ink-soft underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink"
+            >
+              {contactEmail}
+            </a>
+            <Button href="/contact" variant="primary" className="mt-2">
+              Activate capacity
+            </Button>
+          </div>
+
+          <FooterColumn heading="The model" links={primary} />
+
+          <div className="flex flex-col gap-10">
+            <FooterColumn heading="More" links={more} />
+            <div className="flex flex-col gap-3">
+              <span className="font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">
+                Elsewhere
+              </span>
+              <a
+                href={linkedInUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-ink-soft hover:text-ink"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </div>
 
-        <FooterColumn heading="Explore" links={explore} />
-        <FooterColumn heading="Company" links={company} />
-
-        <div className="flex flex-col gap-3">
-          <span className="font-mono text-xs tracking-[0.14em] text-ink-faint uppercase">
-            Elsewhere
-          </span>
-          <a
-            href={linkedInUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-ink-soft hover:text-ink"
-          >
-            LinkedIn
-          </a>
-        </div>
+        {/* The closing statement (§26) — the last thing on the page, and the
+            single sentence the whole site exists to make true. */}
+        <p className="mt-20 max-w-3xl border-t border-line pt-10 font-display text-xl leading-snug font-medium text-balance md:text-3xl">
+          Important work shouldn&apos;t have to wait for organizational capacity to
+          catch up.
+        </p>
       </Container>
 
       <div className="border-t border-line">
@@ -88,8 +110,8 @@ function FooterColumn({
   links: { href: string; label: string }[];
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <span className="font-mono text-xs tracking-[0.14em] text-ink-faint uppercase">
+    <div className="flex flex-col gap-4">
+      <span className="font-mono text-[11px] tracking-[0.18em] text-ink-faint uppercase">
         {heading}
       </span>
       <ul className="flex flex-col gap-2.5">

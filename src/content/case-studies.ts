@@ -5,10 +5,11 @@
  * shouldn't require rebuilding the site).
  *
  * There are ZERO published case studies right now — see docs/CONTENT-TODO.md.
- * The homepage teaser (`src/content/home.ts` → `caseStudyTeaser`) already
- * says the first engagement is in progress; this page's empty state matches
- * that framing rather than showing fake cards. Never invent a client, a
- * metric or a founder quote to fill this array — spec rules 6–9.
+ * This page's empty state says so plainly rather than showing fake cards.
+ * Never invent a client, a metric or a founder quote to fill this array
+ * (build spec §43). The homepage carries the only two verified figures, in
+ * `src/content/home.ts` → `proof`; a real case study is what would justify
+ * linking to this page from there.
  */
 
 export type CaseStudy = {
